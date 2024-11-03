@@ -1,0 +1,97 @@
+# Visual Studio
+.vscode/
+.vs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+out/
+
+# NuGet packages
+*.nupkg
+# Include if NuGet is not used and packages folder is generated
+packages/
+# Uncomment if using package restore
+# !packages/*.dll
+# Include _PublishedWebsites if a publish folder is generated
+_PublishedWebsites/
+publish/
+
+# Microsoft Azure Build Output
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*.cache
+*.ilk
+*.log
+*.obj
+*.pdb
+*.sbr
+*.tlb
+*.tlh
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+*.pfx
+*.snk
+
+# VS Code
+.vscode/
+
+# Rider
+.idea/
+.idea/*
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/libraries
+.idea/*.csproj.iml
+
+# Mac
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# End of Line Handling for Windows/Mac/Linux
+*.sh.eol
+*.ps1.eol
+*.bat.eol
+
+# Log files
+*.log
+
+# npm packages (if any are used in a front-end)
+node_modules/
+
+# SQL Server generated files
+*.mdf
+*.ldf
+*.ndf
+
+# Entity Framework migrations
+Migrations/
+
