@@ -59,8 +59,11 @@ th {
 .no-payments {
   text-align: center;
   padding: 2rem;
-  color: #666;
   background: white;
   border-radius: 8px;
-  margin-top: 2rem;
-} 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.make-payment-btn {
+  margin-bottom: 1rem;
+}

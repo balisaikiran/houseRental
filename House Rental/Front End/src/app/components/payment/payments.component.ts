@@ -38,6 +38,27 @@ export class PaymentsComponent implements OnInit {
     });
   }
 
+  makeTestPayment() {
+    const newPayment: Partial<Payment> = {
+      rentalId: 1, // Make sure this rental ID exists in your database
+      amount: 1500,
+      paymentDate: new Date(),
+      paymentMethod: 'Credit Card',
+      paymentStatus: 'Pending'
+    };
+
+    this.paymentService.makePayment(newPayment).subscribe({
+      next: (response) => {
+        console.log('Payment created:', response);
+        this.loadPayments();
+      },
+      error: (error) => {
+        console.error('Error creating payment:', error);
+        this.errorMessage = 'Failed to create payment. Please try again.';
+      }
+    });
+  }
+
   getStatusClass(status: string): string {
     return `status-${status.toLowerCase()}`;
   }

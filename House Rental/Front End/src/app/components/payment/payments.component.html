@@ -6,6 +6,10 @@
     {{ errorMessage }}
   </div>
   
+  <button class="btn-primary make-payment-btn" (click)="makeTestPayment()">
+    Make Test Payment
+  </button>
+  
   <div *ngIf="isLoading" class="loading-spinner">
     Loading payments...
   </div>
