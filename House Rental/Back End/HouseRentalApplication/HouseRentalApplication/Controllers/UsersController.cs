@@ -113,6 +113,52 @@ namespace HouseRentalApplication.Controllers
             return NoContent();
         }
 
+        // POST: api/Users/login
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            // In production, you should use proper password hashing
+            if (user.Password != loginDto.Password)
+            {
+                return BadRequest(new { message = "Invalid password" });
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+            return Ok(userDto);
+        }
+
+        // POST: api/Users/register
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
+        {
+            if (await _context.Users.AnyAsync(u => u.Email == registerDto.Email))
+            {
+                return BadRequest(new { message = "Email already exists" });
+            }
+
+            var user = new User
+            {
+                Email = registerDto.Email,
+                Password = registerDto.Password, // In production, hash the password
+                Name = registerDto.Name,
+                DateJoined = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var userDto = _mapper.Map<UserDto>(user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, userDto);
+        }
+
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);

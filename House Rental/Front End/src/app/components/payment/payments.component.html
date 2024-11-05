@@ -1,0 +1,47 @@
+<app-nav></app-nav>
+<div class="payments-container">
+  <h2>Payment History</h2>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+  
+  <button class="btn-primary make-payment-btn" (click)="makeTestPayment()">
+    Make Test Payment
+  </button>
+  
+  <div *ngIf="isLoading" class="loading-spinner">
+    Loading payments...
+  </div>
+  
+  <div class="payments-table" *ngIf="!isLoading && payments.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Payment Method</th>
+          <th>Status</th>
+          <th>Property</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of payments">
+          <td>{{ payment.paymentDate | date:'medium' }}</td>
+          <td>${{ payment.amount | number:'1.2-2' }}</td>
+          <td>{{ payment.paymentMethod }}</td>
+          <td>
+            <span [class]="getStatusClass(payment.paymentStatus)">
+              {{ payment.paymentStatus }}
+            </span>
+          </td>
+          <td>{{ payment.rental?.property?.address || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div *ngIf="!isLoading && payments.length === 0" class="no-payments">
+    No payment history available.
+  </div>
+</div> 
