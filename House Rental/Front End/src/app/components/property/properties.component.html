@@ -1,0 +1,31 @@
+<app-nav></app-nav>
+<div class="properties-container">
+  <h2>Available Properties</h2>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+  
+  <div class="property-grid">
+    <div *ngFor="let property of properties" class="property-card">
+      <div class="property-header">
+        <h3>{{ property.propertyType }} in {{ property.city }}</h3>
+        <span class="status" [class.available]="property.status === 'Available'">
+          {{ property.status }}
+        </span>
+      </div>
+      
+      <div class="property-details">
+        <p class="price">${{ property.rentPrice }}/month</p>
+        <p>{{ property.address }}</p>
+        <p>{{ property.description }}</p>
+      </div>
+      
+      <button *ngIf="property.status === 'Available'" 
+              class="btn-rent" 
+              (click)="rentProperty(property.propertyId)">
+        Rent Now
+      </button>
+    </div>
+  </div>
+</div> 
