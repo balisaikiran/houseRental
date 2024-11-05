@@ -16,14 +16,18 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add CORS policy
+// Update CORS policy to allow both HTTP and HTTPS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", builder =>
     {
-        builder.WithOrigins("http://localhost:4200")
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        builder.WithOrigins(
+                "http://localhost:4200",
+                "https://localhost:4200"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
 
@@ -34,15 +38,24 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    // Disable HTTPS redirection in development
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-// Use CORS before routing
+// Use CORS before routing and authorization
 app.UseCors("AllowAngular");
 
+app.UseAuthorization();
 app.MapControllers();
+
+try
+{
+    var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Database connection error: {ex.Message}");
+}
 
 app.Run();

@@ -13,21 +13,26 @@ import { Router } from '@angular/router';
       <form (ngSubmit)="onSubmit()">
         <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
         
+        <div class="form-group" *ngIf="!isLogin">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="name" name="name" required>
+        </div>
+
         <div class="form-group">
           <label>Email</label>
           <input type="email" [(ngModel)]="email" name="email" required>
         </div>
-        
+
         <div class="form-group">
           <label>Password</label>
           <input type="password" [(ngModel)]="password" name="password" required>
         </div>
-        
+
         <button type="submit" class="btn-primary">{{ isLogin ? 'Login' : 'Register' }}</button>
         
-        <p>
+        <p class="toggle-mode">
           {{ isLogin ? 'Need an account?' : 'Already have an account?' }}
-          <a href="#" (click)="toggleAuthMode($event)">
+          <a href="#" (click)="toggleMode($event)">
             {{ isLogin ? 'Register' : 'Login' }}
           </a>
         </p>
@@ -48,11 +53,9 @@ export class AuthComponent {
   isLogin = true;
   email = '';
   password = '';
+  name = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     if (this.isLogin) {
@@ -62,12 +65,30 @@ export class AuthComponent {
             localStorage.setItem('user', JSON.stringify(response));
             this.router.navigate(['/home']);
           },
-          error: (error) => console.error('Login failed:', error)
+          error: (error) => {
+            console.error('Login failed:', error);
+            alert('Login failed: ' + (error.error?.message || 'Unknown error'));
+          }
         });
+    } else {
+      this.authService.register({ 
+        email: this.email, 
+        password: this.password,
+        name: this.name 
+      }).subscribe({
+        next: (response) => {
+          localStorage.setItem('user', JSON.stringify(response));
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+          alert('Registration failed: ' + (error.error?.message || 'Unknown error'));
+        }
+      });
     }
   }
 
-  toggleAuthMode(event: Event) {
+  toggleMode(event: Event) {
     event.preventDefault();
     this.isLogin = !this.isLogin;
   }
