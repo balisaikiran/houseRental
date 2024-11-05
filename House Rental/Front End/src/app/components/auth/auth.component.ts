@@ -39,9 +39,8 @@ import { Router } from '@angular/router';
       max-width: 400px;
       margin: 2rem auto;
       padding: 2rem;
-      background: white;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
   `]
 })
@@ -56,28 +55,15 @@ export class AuthComponent {
   ) {}
 
   onSubmit() {
-    const credentials = { email: this.email, password: this.password };
-    
     if (this.isLogin) {
-      this.authService.login(credentials).subscribe({
-        next: (response) => {
-          localStorage.setItem('user', JSON.stringify(response));
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          console.error('Login failed:', error);
-        }
-      });
-    } else {
-      this.authService.register(credentials).subscribe({
-        next: (response) => {
-          localStorage.setItem('user', JSON.stringify(response));
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          console.error('Registration failed:', error);
-        }
-      });
+      this.authService.login({ email: this.email, password: this.password })
+        .subscribe({
+          next: (response) => {
+            localStorage.setItem('user', JSON.stringify(response));
+            this.router.navigate(['/home']);
+          },
+          error: (error) => console.error('Login failed:', error)
+        });
     }
   }
 
